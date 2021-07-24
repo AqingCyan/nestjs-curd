@@ -18,7 +18,6 @@ export class AuthService {
     if (!entity) {
       throw new UnauthorizedException('用户不存在');
     }
-
     if (!(await entity.comparePassword(password))) {
       throw new UnauthorizedException('密码不正确');
     }
