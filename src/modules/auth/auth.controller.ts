@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LoginDto } from './auth.dto';
+import { User } from '../../core/decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +15,8 @@ export class AuthController {
 
   @Get('test')
   @UseGuards(AuthGuard())
-  async authTest() {
+  async authTest(@User() user) {
+    console.log(user);
     return {
       message: 'ok',
     };
