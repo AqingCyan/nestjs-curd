@@ -1,4 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 
 @Controller('posts')
@@ -8,5 +16,25 @@ export class PostController {
   @Post()
   async store(@Body() data) {
     return await this.postService.store(data);
+  }
+
+  @Get()
+  async index() {
+    return await this.postService.index();
+  }
+
+  @Get(':id')
+  async show(@Param('id') id: string) {
+    return await this.postService.show(id);
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() data) {
+    return await this.postService.update(id, data);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.postService.destroy(id);
   }
 }

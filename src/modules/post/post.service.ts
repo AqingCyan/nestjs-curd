@@ -15,4 +15,20 @@ export class PostService {
     await this.postRepository.save(entity);
     return entity;
   }
+
+  async index() {
+    return await this.postRepository.find();
+  }
+
+  async show(id: string) {
+    return await this.postRepository.findOne(id);
+  }
+
+  async update(id: string, data) {
+    return await this.postRepository.update(id, data);
+  }
+
+  async destroy(id: string) {
+    return await this.postRepository.delete(id);
+  }
 }
