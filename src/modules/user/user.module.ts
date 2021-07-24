@@ -8,5 +8,6 @@ import { User } from './user.entity';
   imports: [TypeOrmModule.forFeature([User])],
   providers: [UserService],
   controllers: [UserController],
+  exports: [UserService], // 其他模块，如auth模块想要使用本模块的内容，需要导出
 })
 export class UserModule {}
