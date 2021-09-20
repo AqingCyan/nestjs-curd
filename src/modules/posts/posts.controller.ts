@@ -16,6 +16,8 @@ import { DemoAuthGuard } from '../../core/guards/demo-auth.guard';
 import { Roles } from '../../core/decorators/roles.decorator';
 import { TransformInterceptor } from '../../core/interceptors/transform.interceptor';
 import { ErrorsInterceptor } from '../../core/interceptors/errors.interceptor';
+import { User } from '../../core/decorators/user.decorator';
+import { DemoPipe } from '../../core/pipes/demo.pipe';
 
 @Controller('posts')
 export class PostsController {
@@ -38,7 +40,8 @@ export class PostsController {
   @UsePipes(ValidationPipe)
   @UseGuards(DemoAuthGuard)
   @Roles('member')
-  store(@Body() post: CreatePostDto) {
+  store(@Body() post: CreatePostDto, @User('demo', new DemoPipe()) user) {
+    console.log(user);
     this.demoService.create(post);
   }
 }
