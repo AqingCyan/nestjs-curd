@@ -8,18 +8,22 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreatePostDto } from './post.dto';
 import { DemoService } from './providers/demo/demo.service';
 import { DemoAuthGuard } from '../../core/guards/demo-auth.guard';
 import { Roles } from '../../core/decorators/roles.decorator';
+import { TransformInterceptor } from '../../core/interceptors/transform.interceptor';
+import { ErrorsInterceptor } from '../../core/interceptors/errors.interceptor';
 
 @Controller('posts')
-@UseGuards(DemoAuthGuard)
 export class PostsController {
   constructor(private readonly demoService: DemoService) {}
 
   @Get()
+  @UseInterceptors(TransformInterceptor)
+  @UseInterceptors(ErrorsInterceptor)
   index() {
     return this.demoService.findAll();
   }
@@ -32,6 +36,7 @@ export class PostsController {
 
   @Post()
   @UsePipes(ValidationPipe)
+  @UseGuards(DemoAuthGuard)
   @Roles('member')
   store(@Body() post: CreatePostDto) {
     this.demoService.create(post);
