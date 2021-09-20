@@ -2,10 +2,11 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreatePostDto } from './post.dto';
 import { DemoService } from './providers/demo/demo.service';
@@ -20,13 +21,14 @@ export class PostsController {
   }
 
   @Get(':id')
-  show(@Param() params) {
-    return { title: `Post ${params.id}` };
+  show(@Param('id', new ParseIntPipe()) id) {
+    console.log('typeof id is', typeof id);
+    return { title: `Post ${id}` };
   }
 
   @Post()
+  @UsePipes(ValidationPipe)
   store(@Body() post: CreatePostDto) {
-    throw new HttpException('没有权限', HttpStatus.FORBIDDEN);
     this.demoService.create(post);
   }
 }
