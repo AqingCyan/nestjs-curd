@@ -4,15 +4,20 @@ import {
   ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 @Catch(HttpException)
 export class DemoFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
+    const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-    response.status(status).json({ statusCode: status, path: request.url });
+    response.status(status).json({
+      statusCode: status,
+      path: request.url,
+      timestamp: new Date().toISOString(),
+    });
   }
 }
