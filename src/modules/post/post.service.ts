@@ -22,4 +22,8 @@ export class PostService {
   async show(id: string) {
     return await this.postRepository.findOne(id);
   }
+
+  async update(id: string, data) {
+    return await this.postRepository.update(id, data);
+  }
 }
