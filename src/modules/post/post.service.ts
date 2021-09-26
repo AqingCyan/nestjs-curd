@@ -18,4 +18,8 @@ export class PostService {
   async index() {
     return await this.postRepository.find();
   }
+
+  async show(id: string) {
+    return await this.postRepository.findOne(id);
+  }
 }
