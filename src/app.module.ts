@@ -14,6 +14,7 @@ import { PostModule } from './modules/post/post.module';
       password: 'password',
       database: 'nest',
       synchronize: true,
+      logging: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     PostModule,
