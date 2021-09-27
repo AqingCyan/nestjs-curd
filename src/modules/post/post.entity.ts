@@ -17,7 +17,7 @@ export class Post {
   title: string;
 
   /* post 内容 */
-  @Column('longtext')
+  @Column('longtext', { nullable: true })
   body: string;
 
   /* post 创建时间 */
