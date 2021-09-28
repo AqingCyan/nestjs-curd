@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -20,6 +21,7 @@ export class User {
 
   /* 用户密码 */
   @Column('longtext', { nullable: true })
+  @Exclude()
   password: string;
 
   /* 用户创建时间 */
