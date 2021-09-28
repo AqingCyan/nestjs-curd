@@ -13,7 +13,7 @@ export class User {
   id: number;
 
   /* 用户姓名 */
-  @Column()
+  @Column('varchar', { unique: true })
   name: string;
 
   /* 用户密码 */
