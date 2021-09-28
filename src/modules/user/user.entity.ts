@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -33,7 +34,19 @@ export class User {
   updated: Date;
 
   @BeforeInsert()
+  @BeforeUpdate()
+  /**
+   * 插入前对密码hash
+   */
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 12);
+  }
+
+  /**
+   * 更新密码时比对
+   * @param password
+   */
+  async comparePassword(password: string) {
+    return await bcrypt.compare(password, this.password);
   }
 }
