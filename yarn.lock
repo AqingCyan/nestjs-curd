@@ -641,7 +641,7 @@
 
 "@nestjs/jwt@^8.0.0":
   version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/jwt/-/jwt-8.0.0.tgz#6c811c17634252dd1dcd5dabf409dbd692b812da"
+  resolved "https://registry.npmjs.org/@nestjs/jwt/-/jwt-8.0.0.tgz#6c811c17634252dd1dcd5dabf409dbd692b812da"
   integrity sha512-fz2LQgYY2zmuD8S+8UE215anwKyXlnB/1FwJQLVR47clNfMeFMK8WCxmn6xdPhF5JKuV1crO6FVabb1qWzDxqQ==
   dependencies:
     "@types/jsonwebtoken" "8.5.4"
