@@ -13,6 +13,8 @@ import {
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from '../../core/decorator/user.decorator';
+import { User as UserEntity } from '../user/user.entity';
 
 @Controller('posts')
 export class PostController {
@@ -20,8 +22,8 @@ export class PostController {
 
   @Post()
   @UseGuards(AuthGuard())
-  async store(@Body() data: PostDto) {
-    return await this.postService.store(data);
+  async store(@Body() data: PostDto, @User() user: UserEntity) {
+    return await this.postService.store(data, user);
   }
 
   @Get()
