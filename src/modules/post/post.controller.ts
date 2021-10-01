@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,6 +8,7 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
@@ -23,6 +25,7 @@ export class PostController {
   }
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   async index() {
     return await this.postService.index();
   }

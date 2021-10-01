@@ -17,7 +17,9 @@ export class PostService {
   }
 
   async index() {
-    return await this.postRepository.find();
+    return await this.postRepository.find({
+      relations: ['user'],
+    });
   }
 
   async show(id: string) {

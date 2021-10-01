@@ -4,11 +4,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
+import { Post } from '../post/post.entity';
 
 @Entity()
 export class User {
@@ -32,6 +34,9 @@ export class User {
   /* 用户更新时间 */
   @UpdateDateColumn()
   updated: Date;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 
   @BeforeInsert()
   @BeforeUpdate()
