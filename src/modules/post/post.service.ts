@@ -34,4 +34,12 @@ export class PostService {
   async destroy(id: string) {
     return await this.postRepository.delete(id);
   }
+
+  async vote(id: number, user: User) {
+    await this.postRepository
+      .createQueryBuilder()
+      .relation(User, 'voted')
+      .of(user)
+      .add(id);
+  }
 }

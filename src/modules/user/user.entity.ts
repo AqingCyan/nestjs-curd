@@ -4,6 +4,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -35,8 +37,13 @@ export class User {
   @UpdateDateColumn()
   updated: Date;
 
+  /* 一对多关系 */
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @ManyToMany(() => Post)
+  @JoinTable()
+  voted: Post[];
 
   @BeforeInsert()
   @BeforeUpdate()

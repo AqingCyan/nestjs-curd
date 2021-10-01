@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -45,5 +46,11 @@ export class PostController {
   @Delete(':id')
   async destroy(@Param('id') id: string) {
     return await this.postService.destroy(id);
+  }
+
+  @Post(':id/vote')
+  @UseGuards(AuthGuard())
+  async vote(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
+    return await this.postService.vote(id, user);
   }
 }

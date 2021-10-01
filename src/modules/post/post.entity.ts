@@ -30,6 +30,7 @@ export class Post {
   @UpdateDateColumn()
   updated: Date;
 
+  /* 多对一关系 */
   @ManyToOne(() => User, (user) => user.posts)
   user: User;
 }

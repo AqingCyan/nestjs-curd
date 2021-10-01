@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const entity = await this.userService.findByName(name);
 
     if (!entity) {
-      done(new UnauthorizedException('没没找用户'));
+      done(new UnauthorizedException('没找到用户'));
     }
 
     done(null, entity);
