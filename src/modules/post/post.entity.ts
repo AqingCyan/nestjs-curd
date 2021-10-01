@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity('posts')
 export class Post {
@@ -27,4 +29,8 @@ export class Post {
   /* post 更新时间 */
   @UpdateDateColumn()
   updated: Date;
+
+  /* 多对一关系 */
+  @ManyToOne(() => User, (user) => user.posts)
+  user: User;
 }

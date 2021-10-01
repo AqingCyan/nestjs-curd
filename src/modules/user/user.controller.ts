@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   UseInterceptors,
@@ -33,5 +34,11 @@ export class UserController {
     @Body() data: UpdatePasswordDto,
   ) {
     return await this.userService.updatePassword(id, data);
+  }
+
+  @Get(':id/liked')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async liked(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.liked(id);
   }
 }

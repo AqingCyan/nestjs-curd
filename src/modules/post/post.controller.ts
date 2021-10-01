@@ -1,25 +1,34 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { User } from '../../core/decorator/user.decorator';
+import { User as UserEntity } from '../user/user.entity';
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
-  async store(@Body() data: PostDto) {
-    return await this.postService.store(data);
+  @UseGuards(AuthGuard())
+  async store(@Body() data: PostDto, @User() user: UserEntity) {
+    return await this.postService.store(data, user);
   }
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   async index() {
     return await this.postService.index();
   }
@@ -37,5 +46,20 @@ export class PostController {
   @Delete(':id')
   async destroy(@Param('id') id: string) {
     return await this.postService.destroy(id);
+  }
+
+  @Post(':id/vote')
+  @UseGuards(AuthGuard())
+  async vote(@Param('id', ParseIntPipe) id: number, @User() user: UserEntity) {
+    return await this.postService.vote(id, user);
+  }
+
+  @Delete(':id/vote')
+  @UseGuards(AuthGuard())
+  async unVote(
+    @Param('id', ParseIntPipe) id: number,
+    @User() user: UserEntity,
+  ) {
+    return await this.postService.unVote(id, user);
   }
 }
