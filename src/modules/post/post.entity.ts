@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
+import { Category } from '../category/category.entity';
 
 @Entity('posts')
 export class Post {
@@ -33,4 +35,10 @@ export class Post {
   /* 多对一关系 */
   @ManyToOne(() => User, (user) => user.posts)
   user: User;
+
+  @ManyToMany(() => User, (user) => user.voted)
+  liked: User[];
+
+  @ManyToOne(() => Category, (category) => category.posts)
+  category: Category;
 }

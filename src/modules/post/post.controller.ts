@@ -16,6 +16,8 @@ import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorator/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
+import { ListOptions } from '../../core/decorator/list-options.decorator';
+import { ListOptionsInterface } from '../../core/interfaces/list-options.interface';
 
 @Controller('posts')
 export class PostController {
@@ -29,8 +31,8 @@ export class PostController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  async index() {
-    return await this.postService.index();
+  async index(@ListOptions() options: ListOptionsInterface) {
+    return await this.postService.index(options);
   }
 
   @Get(':id')
@@ -61,5 +63,11 @@ export class PostController {
     @User() user: UserEntity,
   ) {
     return await this.postService.unVote(id, user);
+  }
+
+  @Get(':id/liked')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async liked(@Param('id', ParseIntPipe) id: number) {
+    return await this.postService.liked(id);
   }
 }

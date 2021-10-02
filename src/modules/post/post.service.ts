@@ -4,6 +4,7 @@ import { Post } from './post.entity';
 import { Repository } from 'typeorm';
 import { PostDto } from './post.dto';
 import { User } from '../user/user.entity';
+import { ListOptionsInterface } from '../../core/interfaces/list-options.interface';
 
 @Injectable()
 export class PostService {
@@ -17,10 +18,18 @@ export class PostService {
     return entity;
   }
 
-  async index() {
-    return await this.postRepository.find({
-      relations: ['user'],
-    });
+  async index(options: ListOptionsInterface) {
+    const { categories } = options;
+    const queryBuilder = await this.postRepository.createQueryBuilder('post');
+
+    queryBuilder.leftJoinAndSelect('post.user', 'user');
+    queryBuilder.leftJoinAndSelect('post.category', 'category');
+
+    if (categories) {
+      queryBuilder.where('category.alias IN (:...categories)', { categories });
+    }
+
+    return queryBuilder.getMany();
   }
 
   async show(id: string) {
@@ -49,5 +58,13 @@ export class PostService {
       .relation(User, 'voted')
       .of(user)
       .remove({ id });
+  }
+
+  async liked(id: number) {
+    return await this.postRepository
+      .createQueryBuilder()
+      .relation(Post, 'liked')
+      .of(id)
+      .loadMany();
   }
 }
