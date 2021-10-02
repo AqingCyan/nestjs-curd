@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -29,8 +30,8 @@ export class PostController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  async index() {
-    return await this.postService.index();
+  async index(@Query('categories') categories: string) {
+    return await this.postService.index(categories);
   }
 
   @Get(':id')

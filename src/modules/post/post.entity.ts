@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
+import { Category } from '../category/category.entity';
 
 @Entity('posts')
 export class Post {
@@ -37,4 +38,7 @@ export class Post {
 
   @ManyToMany(() => User, (user) => user.voted)
   liked: User[];
+
+  @ManyToOne(() => Category, (category) => category.posts)
+  category: Category;
 }
