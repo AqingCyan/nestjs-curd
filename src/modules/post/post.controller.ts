@@ -8,7 +8,6 @@ import {
   ParseIntPipe,
   Post,
   Put,
-  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,6 +16,8 @@ import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorator/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
+import { ListOptions } from '../../core/decorator/list-options.decorator';
+import { ListOptionsInterface } from '../../core/interfaces/list-options.interface';
 
 @Controller('posts')
 export class PostController {
@@ -30,8 +31,8 @@ export class PostController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  async index(@Query('categories') categories: string) {
-    return await this.postService.index(categories);
+  async index(@ListOptions() options: ListOptionsInterface) {
+    return await this.postService.index(options);
   }
 
   @Get(':id')
