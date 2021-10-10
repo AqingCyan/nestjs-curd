@@ -28,7 +28,6 @@ export class PostService {
 
       if (name) {
         const _tag = await this.tagRepository.findOne({ name });
-        console.log(_tag);
         if (_tag) {
           return _tag;
         }
@@ -44,8 +43,6 @@ export class PostService {
     const { tags } = data;
 
     if (tags) {
-      const res_tag = await this.beforeTag(tags);
-      console.log(res_tag);
       data.tags = await this.beforeTag(tags);
     }
 
