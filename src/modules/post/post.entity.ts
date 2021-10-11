@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -9,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Category } from '../category/category.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Entity('posts')
 export class Post {
@@ -41,4 +43,8 @@ export class Post {
 
   @ManyToOne(() => Category, (category) => category.posts)
   category: Category;
+
+  @ManyToMany(() => Tag, (tag) => tag.posts)
+  @JoinTable()
+  tags: Tag[];
 }
