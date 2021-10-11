@@ -8,7 +8,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
 import { CommentModule } from './modules/comment/comment.module';
-import { CommentService } from './modules/comment/comment.service';
 
 @Module({
   imports: [
@@ -31,6 +30,6 @@ import { CommentService } from './modules/comment/comment.service';
     CommentModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CommentService],
+  providers: [AppService],
 })
 export class AppModule {}

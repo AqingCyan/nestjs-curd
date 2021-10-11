@@ -5,12 +5,14 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Category } from '../category/category.entity';
 import { Tag } from '../tag/tag.entity';
+import { Comment } from '../comment/comment.entity';
 
 @Entity('posts')
 export class Post {
@@ -47,4 +49,7 @@ export class Post {
   @ManyToMany(() => Tag, (tag) => tag.posts)
   @JoinTable()
   tags: Tag[];
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }
