@@ -2,12 +2,16 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const ListOptions = createParamDecorator(
   (data: unknown, req: ExecutionContext) => {
-    let { categories } = req.switchToHttp().getRequest().query;
+    let { categories, tags } = req.switchToHttp().getRequest().query;
 
     if (categories) {
       categories = categories.split('-');
     }
 
-    return { categories };
+    if (tags) {
+      tags = tags.split('-');
+    }
+
+    return { categories, tags };
   },
 );
