@@ -2,9 +2,11 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -27,5 +29,18 @@ export class CommentController {
     @User() user: UserEntity,
   ) {
     return await this.commentService.storePostComment(id, user, data);
+  }
+
+  @Put('comments/:id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: CommentDto,
+  ) {
+    return this.commentService.update(id, data);
+  }
+
+  @Delete('comments/:id')
+  async destroy(@Param('id', ParseIntPipe) id: number) {
+    return this.commentService.destroy(id);
   }
 }
