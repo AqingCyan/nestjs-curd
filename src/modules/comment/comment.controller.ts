@@ -3,6 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -42,5 +43,17 @@ export class CommentController {
   @Delete('comments/:id')
   async destroy(@Param('id', ParseIntPipe) id: number) {
     return this.commentService.destroy(id);
+  }
+
+  @Get('posts/:id/comments')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async showPostComments(@Param('id', ParseIntPipe) id: number) {
+    return await this.commentService.showPostComments(id);
+  }
+
+  @Get('users/:id/comments')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async showUserComments(@Param('id', ParseIntPipe) id: number) {
+    return await this.commentService.showUserComments(id);
   }
 }
