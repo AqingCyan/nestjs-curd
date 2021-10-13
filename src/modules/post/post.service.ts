@@ -52,14 +52,19 @@ export class PostService {
   }
 
   async index(options: ListOptionsInterface) {
-    const { categories } = options;
+    const { categories, tags } = options;
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
 
     queryBuilder.leftJoinAndSelect('post.user', 'user');
     queryBuilder.leftJoinAndSelect('post.category', 'category');
+    queryBuilder.leftJoinAndSelect('post.tags', 'tag');
 
     if (categories) {
       queryBuilder.where('category.alias IN (:...categories)', { categories });
+    }
+
+    if (tags) {
+      queryBuilder.andWhere('tag.name IN (:...tags)', { tags });
     }
 
     return queryBuilder.getMany();
@@ -70,7 +75,19 @@ export class PostService {
   }
 
   async update(id: string, data: Partial<PostDto>) {
-    return await this.postRepository.update(id, data);
+    const { tags } = data;
+    delete data.tags;
+
+    await this.postRepository.update(id, data);
+    const entity = await this.postRepository.findOne(id, {
+      relations: ['category', 'tags'],
+    });
+
+    if (tags) {
+      entity.tags = await this.beforeTag(tags);
+    }
+
+    return await this.postRepository.save(entity);
   }
 
   async destroy(id: string) {
