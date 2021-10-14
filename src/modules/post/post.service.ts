@@ -69,7 +69,7 @@ export class PostService {
 
     queryBuilder.take(limit).skip(limit * (page - 1));
 
-    return queryBuilder.getMany();
+    return queryBuilder.getManyAndCount();
   }
 
   async show(id: string) {
