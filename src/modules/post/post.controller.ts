@@ -18,6 +18,7 @@ import { User } from '../../core/decorator/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { ListOptions } from '../../core/decorator/list-options.decorator';
 import { ListOptionsInterface } from '../../core/interfaces/list-options.interface';
+import { TransformResponseInterceptor } from '../../core/interceptors/transform-response.interceptor';
 
 @Controller('posts')
 export class PostController {
@@ -31,6 +32,7 @@ export class PostController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(TransformResponseInterceptor)
   async index(@ListOptions({ limit: 10 }) options: ListOptionsInterface) {
     return await this.postService.index(options);
   }
