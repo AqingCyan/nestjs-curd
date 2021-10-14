@@ -2,7 +2,9 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const ListOptions = createParamDecorator(
   (data: unknown, req: ExecutionContext) => {
-    let { categories, tags } = req.switchToHttp().getRequest().query;
+    let { categories, tags, page, limit } = req
+      .switchToHttp()
+      .getRequest().query;
 
     if (categories) {
       categories = categories.split('-');
@@ -12,6 +14,18 @@ export const ListOptions = createParamDecorator(
       tags = tags.split('-');
     }
 
-    return { categories, tags };
+    if (page) {
+      page = parseInt(page, 10);
+    } else {
+      page = 1;
+    }
+
+    if (limit) {
+      limit = parseInt(limit, 10);
+    } else {
+      limit = 3;
+    }
+
+    return { categories, tags, page, limit };
   },
 );
