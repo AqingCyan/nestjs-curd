@@ -1,7 +1,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { ListOptionsInterface } from '../interfaces/list-options.interface';
 
 export const ListOptions = createParamDecorator(
-  (data: unknown, req: ExecutionContext) => {
+  (data: Partial<ListOptionsInterface> = {}, req: ExecutionContext) => {
     let { categories, tags, page, limit } = req
       .switchToHttp()
       .getRequest().query;
@@ -22,6 +23,8 @@ export const ListOptions = createParamDecorator(
 
     if (limit) {
       limit = parseInt(limit, 10);
+    } else if (limit === undefined && data.limit) {
+      limit = data.limit;
     } else {
       limit = 3;
     }
