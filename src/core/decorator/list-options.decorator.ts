@@ -3,7 +3,7 @@ import { ListOptionsInterface } from '../interfaces/list-options.interface';
 
 export const ListOptions = createParamDecorator(
   (data: Partial<ListOptionsInterface> = {}, req: ExecutionContext) => {
-    let { categories, tags, page, limit } = req
+    let { categories, tags, page, limit, sort, order } = req
       .switchToHttp()
       .getRequest().query;
 
@@ -29,6 +29,16 @@ export const ListOptions = createParamDecorator(
       limit = 3;
     }
 
-    return { categories, tags, page, limit };
+    if (!sort) {
+      sort = 'created';
+    }
+
+    if (order) {
+      order = order.toUpperCase();
+    } else {
+      order = 'DESC';
+    }
+
+    return { categories, tags, page, limit, order, sort };
   },
 );
