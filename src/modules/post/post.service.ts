@@ -52,7 +52,7 @@ export class PostService {
   }
 
   async index(options: ListOptionsInterface) {
-    const { categories, tags } = options;
+    const { categories, tags, page, limit, order, sort } = options;
     const queryBuilder = await this.postRepository.createQueryBuilder('post');
 
     queryBuilder.leftJoinAndSelect('post.user', 'user');
@@ -67,7 +67,13 @@ export class PostService {
       queryBuilder.andWhere('tag.name IN (:...tags)', { tags });
     }
 
-    return queryBuilder.getMany();
+    // 分页
+    queryBuilder.take(limit).skip(limit * (page - 1));
+
+    // 排序
+    queryBuilder.orderBy({ [`post.${sort}`]: order });
+
+    return queryBuilder.getManyAndCount();
   }
 
   async show(id: string) {
