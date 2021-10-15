@@ -29,12 +29,18 @@ export const ListOptions = createParamDecorator(
       limit = 3;
     }
 
+    if (sort === undefined && data.sort) {
+      sort = data.sort;
+    }
+
     if (!sort) {
       sort = 'created';
     }
 
     if (order) {
       order = order.toUpperCase();
+    } else if (order === undefined && data.order) {
+      order = data.order;
     } else {
       order = 'DESC';
     }
