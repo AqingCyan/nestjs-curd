@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { Post } from '../post/post.entity';
 import { Comment } from '../comment/comment.entity';
+import { Role } from '../role/role.entity';
 
 @Entity()
 export class User {
@@ -48,6 +49,10 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
+
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable()
+  roles: Role[];
 
   @BeforeInsert()
   @BeforeUpdate()
