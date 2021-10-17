@@ -59,7 +59,13 @@ export class UserService {
   }
 
   async findByName(name: string) {
-    return await this.userRepository.findOne({ name });
+    const queryBuilder = await this.userRepository.createQueryBuilder('user');
+
+    queryBuilder
+      .where('user.name = :name', { name })
+      .leftJoinAndSelect('user.roles', 'roles');
+
+    return queryBuilder.getOne();
   }
 
   async liked(id: number) {
