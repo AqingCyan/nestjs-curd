@@ -59,12 +59,30 @@ export class UserService {
   }
 
   async findByName(name: string) {
-    return await this.userRepository.findOne({ name });
+    const queryBuilder = await this.userRepository.createQueryBuilder('user');
+
+    queryBuilder
+      .where('user.name = :name', { name })
+      .leftJoinAndSelect('user.roles', 'roles');
+
+    return queryBuilder.getOne();
   }
 
   async liked(id: number) {
     return this.userRepository.findOne(id, {
       relations: ['voted', 'voted.user'],
     });
+  }
+
+  async update(id: number, data: UserDto) {
+    const { roles } = data;
+
+    const entity = await this.userRepository.findOne(id);
+
+    if (roles) {
+      entity.roles = roles;
+    }
+
+    return await this.userRepository.save(entity);
   }
 }
