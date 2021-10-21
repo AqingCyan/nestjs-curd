@@ -85,4 +85,21 @@ export class UserService {
 
     return await this.userRepository.save(entity);
   }
+
+  /**
+   * 用户是否有指定资源
+   * @param id
+   * @param resource
+   * @param resourceId
+   */
+  async possess(id: number, resource: string, resourceId: number) {
+    const result = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .leftJoin(`user.${resource}`, resource)
+      .andWhere(`${resource}.id = :resourceId`, { resourceId })
+      .getCount();
+
+    return result === 1;
+  }
 }
