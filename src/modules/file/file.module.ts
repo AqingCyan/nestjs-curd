@@ -2,6 +2,8 @@ import { BadRequestException, Module } from '@nestjs/common';
 import { FileController } from './file.controller';
 import { FileService } from './file.service';
 import { MulterModule } from '@nestjs/platform-express';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { File } from './file.entity';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { MulterModule } from '@nestjs/platform-express';
         }
       },
     }),
+    TypeOrmModule.forFeature([File]),
   ],
   controllers: [FileController],
   providers: [FileService],
