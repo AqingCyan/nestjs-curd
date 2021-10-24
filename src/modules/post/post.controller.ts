@@ -17,8 +17,13 @@ import { AuthGuard } from '@nestjs/passport';
 import { User } from '../../core/decorator/user.decorator';
 import { User as UserEntity } from '../user/user.entity';
 import { ListOptions } from '../../core/decorator/list-options.decorator';
+import { Permissions } from '../../core/decorator/permission.decorator';
 import { ListOptionsInterface } from '../../core/interfaces/list-options.interface';
 import { TransformResponseInterceptor } from '../../core/interceptors/transform-response.interceptor';
+import { AccessGuard } from 'src/core/guards/access.guard';
+import { Resource } from 'src/core/enums/resource.enum';
+import { Possession } from '../../core/enums/possession.enum';
+import { UserRole } from '../../core/enums/user-role.enum';
 
 @Controller('posts')
 export class PostController {
@@ -46,6 +51,12 @@ export class PostController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard(), AccessGuard)
+  @Permissions({
+    resource: Resource.POST,
+    possession: Possession.OWN,
+    role: UserRole.VIP,
+  })
   async update(@Param('id') id: string, @Body() data: Partial<PostDto>) {
     return await this.postService.update(id, data);
   }
